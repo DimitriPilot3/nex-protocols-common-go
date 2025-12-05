@@ -8,8 +8,15 @@ import (
 )
 
 // UpdateGameAttribute updates an attribute on a matchmake session
+//
+// attribIndex is 1-based, such that the first attribute is at index 1.
+// This function may have undefined behavior if attributeIndex is zero or greater than the number of attributes currently stored.
 func UpdateGameAttribute(manager *common_globals.MatchmakingManager, gatheringID uint32, attributeIndex uint32, newValue uint32) *nex.Error {
-	result, err := manager.Database.Exec(`UPDATE matchmaking.matchmake_sessions SET attribs[$1]=$2 WHERE id=$3`, attributeIndex + 1, newValue, gatheringID)
+	if attributeIndex == 0 {
+		return nex.NewError(nex.ResultCodes.Core.InvalidIndex, "change_error")
+	}
+
+	result, err := manager.Database.Exec(`UPDATE matchmaking.matchmake_sessions SET attribs[$1]=$2 WHERE id=$3`, attributeIndex, newValue, gatheringID)
 	if err != nil {
 		return nex.NewError(nex.ResultCodes.Core.Unknown, err.Error())
 	}

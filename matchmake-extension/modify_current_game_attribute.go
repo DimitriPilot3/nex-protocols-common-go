@@ -30,9 +30,9 @@ func (commonProtocol *CommonProtocol) modifyCurrentGameAttribute(err error, pack
 		return nil, nex.NewError(nex.ResultCodes.RendezVous.PermissionDenied, "change_error")
 	}
 
+	// * attribIndex is 1-based, such that the first attribute is at index 1
 	index := int(attribIndex)
-
-	if index >= len(session.Attributes) {
+	if index == 0 || index > len(session.Attributes) {
 		commonProtocol.manager.Mutex.Unlock()
 		return nil, nex.NewError(nex.ResultCodes.Core.InvalidIndex, "change_error")
 	}
