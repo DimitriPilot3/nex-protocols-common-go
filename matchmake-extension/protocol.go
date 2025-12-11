@@ -192,6 +192,7 @@ func NewCommonProtocol(protocol matchmake_extension.Interface) *CommonProtocol {
 	protocol.SetHandlerUpdateNotificationData(commonProtocol.updateNotificationData)
 	protocol.SetHandlerGetFriendNotificationData(commonProtocol.getFriendNotificationData)
 	protocol.SetHandlerGetlstFriendNotificationData(commonProtocol.getlstFriendNotificationData)
+	protocol.SetHandlerUpdateMatchmakeSessionPart(commonProtocol.updateMatchmakeSessionPart)
 
 	endpoint.OnConnectionEnded(func(connection *nex.PRUDPConnection) {
 		commonProtocol.manager.Mutex.Lock()
